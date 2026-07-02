@@ -1,17 +1,26 @@
 class Solution {
 public:
     vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
-        vector<int> res(nums1.size(),-1);
-        for(int i=0;i<nums1.size();i++){
-            auto it=find(nums2.begin(),nums2.end(),nums1[i]);
-            int track=it-nums2.begin();
-            while(track+1<nums2.size()){
-                if(nums2[track+1]>nums1[i]){
-                    res[i]=nums2[track+1];
-                    break;
+        stack<int>st;
+        unordered_map<int,int>mpp;
+        for(int i=nums2.size()-1;i>=0;i--){
+            if(!st.empty() && nums2[i]<st.top()){
+                mpp[nums2[i]]=st.top();
+            }else{
+                while(!st.empty() && nums2[i]>=st.top()){
+                    st.pop();
                 }
-                track++;
+                if(!st.empty() && nums2[i]<st.top()){
+                    mpp[nums2[i]]=st.top();
+                }else{
+                    mpp[nums2[i]]=-1;
+                }
             }
+            st.push(nums2[i]);
+        }
+        vector<int>res;
+        for(auto nums:nums1){
+            res.push_back(mpp[nums]);
         }
         return res;
     }
