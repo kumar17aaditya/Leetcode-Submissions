@@ -1,20 +1,27 @@
 class Solution {
 public:
     void setZeroes(vector<vector<int>>& matrix) {
-        vector<pair<int,int>> store;
-        for(int i=0;i<matrix.size();i++){
-            for(int j=0;j<matrix[0].size();j++){
-                if(matrix[i][j]==0){
-                    store.push_back({i,j});
+
+        unordered_set<int> rows;
+        unordered_set<int> cols;
+
+        for(int i = 0; i < matrix.size(); i++) {
+            for(int j = 0; j < matrix[0].size(); j++) {
+
+                if(matrix[i][j] == 0) {
+                    rows.insert(i);
+                    cols.insert(j);
                 }
             }
         }
-        for(int i=0;i<matrix.size();i++){
-            for(int j=0;j<matrix[0].size();j++){
-                for(auto it=store.begin();it!=store.end();it++){
-                    if(it->first==i || it->second==j){
-                        matrix[i][j]=0;
-                    }
+
+        for(int i = 0; i < matrix.size(); i++) {
+            for(int j = 0; j < matrix[0].size(); j++) {
+
+                if(rows.find(i) != rows.end() ||
+                   cols.find(j) != cols.end()) {
+
+                    matrix[i][j] = 0;
                 }
             }
         }
